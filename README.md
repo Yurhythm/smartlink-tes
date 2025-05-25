@@ -2,7 +2,7 @@
 ## Petunjuk Instalasi
 
 1. jalankan dalam terminal "composer install"
-2. jalankan dalam terminal "npm install & npm run dev"
+2. jalankan dalam terminal "npm install" & "npm run dev"
 3. jalankan dalam terminal untuk mengcopy env "cp .env.example .env"
 4. generate application key dengan menjalankan "php artisan key:generate"
 5. edit konfigurasi database dalam .env
