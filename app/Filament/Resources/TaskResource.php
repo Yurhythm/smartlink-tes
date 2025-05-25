@@ -34,6 +34,7 @@ class TaskResource extends Resource implements HasShieldPermissions
         return [
             'view',
             'view_any',
+            'view_all',
             'create',
             'update',
             'delete',
@@ -191,6 +192,17 @@ class TaskResource extends Resource implements HasShieldPermissions
             ]);
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        if (!Auth::user()?->can('view_all_task')) {
+            $query->where('user_id', Auth::user()->id);
+        }
+
+        return $query;
+    }
+
     public static function getRelations(): array
     {
         return [
@@ -211,5 +223,10 @@ class TaskResource extends Resource implements HasShieldPermissions
     public function changeStatus(User $user)
     {
         return $user->can('change_status');
+    }
+
+    public function viewAll(User $user)
+    {
+        return $user->can('view_all');
     }
 }
