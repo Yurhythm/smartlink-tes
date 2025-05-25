@@ -152,6 +152,12 @@ class TaskResource extends Resource implements HasShieldPermissions
                     ->searchable(),
             ], layout: FiltersLayout::AboveContent)
             ->actions([
+                Tables\Actions\Action::make('comments')
+                    ->label('Comment')
+                    ->url(fn(Task $record) => route('filament.admin.resources.tasks.comment', ['record' => $record]))
+                    ->visible(fn($record) =>  Auth::user()?->can('create_task') || Auth::user()?->can('update_task') || Auth::id() === $record->user_id)
+                    // ->icon('heroicon-o-chat-bubble-left')
+                    ->color('info'),
                 Tables\Actions\Action::make('changeStatus')
                     ->label('Change Status')
                     // ->icon('heroicon-o-pencil')
@@ -176,7 +182,7 @@ class TaskResource extends Resource implements HasShieldPermissions
                     ->modalSubmitActionLabel('Update Status')
                     ->requiresConfirmation(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -198,6 +204,7 @@ class TaskResource extends Resource implements HasShieldPermissions
             'index' => Pages\ListTasks::route('/'),
             'create' => Pages\CreateTask::route('/create'),
             'edit' => Pages\EditTask::route('/{record}/edit'),
+            'comment' => Pages\CommentTask::route('/{record}/comments'),
         ];
     }
 
